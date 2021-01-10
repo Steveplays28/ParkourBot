@@ -1,0 +1,9 @@
+{
+  "name": "parkour-bot",
+  "version": "0.0.0",
+  "description": "ParkourBot",
+  "main": "app.js",
+  "author": {
+    "name": ""
+  }
+}
