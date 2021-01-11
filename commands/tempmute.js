@@ -63,20 +63,27 @@ module.exports = {
             err_embed.addField(`No time specified`,`Couldn't find time`,false)
         )
         //#endregion
-
+        
+        let reason 
+        for(let i = 2; i < args.length; i++) {
+            reason += args[i] + ' '
+        }
         await (toMute.roles.add(muteRole))
-        message.channel.send(
+        let embed = message.channel.send(
             new Discord.MessageEmbed()
             .setColor(muted_color)
             .setTitle('Mute')
             .addField(
                 `${toMute} has been muted`,
                 `Duration: **${muteTime}**
-                Reason: **${args.splice(0,3).join(' ')}**
+                Reason: **${reason}**
                 `.replace(/    /g,''),
                 false
                 )
-        )
+        ).then(msg => {
+            msg.delete({timeout: 4000})
+            message.delete({timeout: 4000})
+        })
 
     },
     name:   "tempmute",
