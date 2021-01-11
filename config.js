@@ -6,5 +6,9 @@ module.exports = {
         required_permission: "MANAGE_MESSAGES",
         mute_role_name: "muted",
         muted_color: "#D61D00",
+        permissions: [
+            'VIEW_CHANNEL',
+            'READ_MESSAGE_HISTORY'
+        ]
     }
 }
