@@ -4,7 +4,7 @@ module.exports = {
     prefix: "!",
     mute: {
         required_permission: "MANAGE_MESSAGES",
-        mute_role_name:     "muted",
-        muted_color:        "#D61D00",
+        mute_role_name: "muted",
+        muted_color: "#D61D00",
     }
 }
