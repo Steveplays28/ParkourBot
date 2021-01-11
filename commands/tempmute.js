@@ -1,4 +1,7 @@
-const { prefix, bot_color, err_color, muted_color, no_mute_permission, mute_role_name } = require("../config"), 
+const { prefix, bot_color, err_color, mute } = require("../config"), 
+    mute_role_name = mute.mute_role_name,
+    muted_color = mute.muted_color,
+    required_permission = mute.required_permission,
     Discord = require("discord.js")
 
 module.exports = {
@@ -14,9 +17,9 @@ module.exports = {
         return message.channel.send(
             err_embed.addField('User not found',`Couldn't find User (${args[0]})`,false)
         )
-        // if(message.guild.member(toMute).hasPermission(no_mute_permission)) 
+        // if(message.guild.member(toMute).hasPermission(required_permission)) 
         // return message.channel.send(
-        //     err_embed.addField('Can\'t be muted',`Couldn't mute User with Permission: ${no_mute_permission}`,false)
+        //     err_embed.addField('Can\'t be muted',`Couldn't mute User with Permission: ${required_permission}`,false)
         // )
 
         let muteRole = message.guild.roles.cache.find(role => role.name == mute_role_name)
