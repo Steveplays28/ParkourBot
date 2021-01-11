@@ -1,4 +1,4 @@
-const { prefix, managing_color } = require("../config"), Discord = require("discord.js"), path=require("path")
+const { prefix, bot_color } = require("../config"), Discord = require("discord.js"), path=require("path")
 var cmds = []
 require("fs").readdirSync(path.join(__dirname, ".")).forEach(file => {
     cmds.push(require(path.join(__dirname, ".", file)))
@@ -14,7 +14,7 @@ module.exports = {
     run: async(message, args, client) => {
             
         var embed = new Discord.MessageEmbed()
-            .setColor(managing_color)
+            .setColor(bot_color)
             .setTitle("Help")
 
         
