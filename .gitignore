@@ -1,6 +1,6 @@
 # idk where to put it else
-/bot/node_modules
-
+node_modules
+package-lock.json
 
 # See http://help.github.com/ignore-files/ for more about ignoring files.
 
