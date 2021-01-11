@@ -1,6 +1,9 @@
 const Discord = require('discord.js'), fs = require('fs'), settings = require('./config');
-const { prefix, token} = require('./config');
+const { prefix } = require('./config'), env = require('dotenv').config()
 const client = new Discord.Client()
+
+const token = env.parsed.TOKEN
+
 client.login(token)
 
 
