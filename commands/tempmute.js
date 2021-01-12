@@ -23,14 +23,14 @@ module.exports = {
         //#endregion
 
         //Person to be kicked has required permissions -> return error
-        //////////////
-        // commented because of testing purposes
-        //////////////
         //#region check permissions of "To be muted"
-        // if(toMute.hasPermission(required_permission)) 
-        // return message.channel.send(
-        //     err_embed.addField('Can\'t be muted',`Couldn't mute User with Permission: ${required_permission}`,false)
-        // )
+        if(toMute.hasPermission(required_permission)) 
+        return message.channel.send(
+            err_embed.addField('Can\'t be muted',`Couldn't mute User with Permission: ${required_permission}`,false)
+        ).then(msg => {
+            msg.delete({timeout: 4000})
+            message.delete({timeout: 4000})
+        })
         //#endregion
         
         //get the 
@@ -61,7 +61,10 @@ module.exports = {
         if(!muteTime)
         return message.channel.send(
             err_embed.addField(`No time specified`,`Couldn't find time`,false)
-        )
+        ).then(msg => {
+            msg.delete({timeout: 4000})
+            message.delete({timeout: 4000})
+        })
         //#endregion
         
         let reason = ' '
@@ -75,7 +78,7 @@ module.exports = {
             .setTitle('Mute')
             .addField(
                 `${toMute} has been muted`,
-                `Duration: **${muteTime}**
+                `Duration: **${ms(muteTime)/1000}s**
                 Reason: **${reason}**
                 `.replace(/    /g,''),
                 false
@@ -84,7 +87,9 @@ module.exports = {
             msg.delete({timeout: 4000})
             message.delete({timeout: 4000})
         })
-
+        setTimeout(function () {
+            toMute.roles.remove(muteRole)
+        },ms(muteTime))
     },
     name:   "tempmute",
     alias:  ["mute"],
