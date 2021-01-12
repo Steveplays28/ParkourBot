@@ -1,6 +1,6 @@
 const ms = require("ms")
 
-const { prefix, bot_color, err_color, mute } = require("../config"), 
+const { prefix, bot_color, err_color, mute, mod_category_channel_name: modCategoryChannelName} = require("../config"), 
     mute_role_name = mute.mute_role_name,
     muted_color = mute.muted_color,
     required_permission = mute.required_permission,
@@ -24,13 +24,13 @@ module.exports = {
 
         //Person to be kicked has required permissions -> return error
         //#region check permissions of "To be muted"
-        if(toMute.hasPermission(required_permission)) 
-        return message.channel.send(
-            err_embed.addField('Can\'t be muted',`Couldn't mute User with Permission: ${required_permission}`,false)
-        ).then(msg => {
-            msg.delete({timeout: 4000})
-            message.delete({timeout: 4000})
-        })
+        // if(toMute.hasPermission(required_permission)) 
+        // return message.channel.send(
+        //     err_embed.addField('Can\'t be muted',`Couldn't mute User with Permission: ${required_permission}`,false)
+        // ).then(msg => {
+        //     msg.delete({timeout: 4000})
+        //     message.delete({timeout: 4000})
+        // })
         //#endregion
         
         //get the 
@@ -43,9 +43,14 @@ module.exports = {
                 muteRole = await message.guild.roles.create({
                     data: {
                         name: mute_role_name,
-                        color: muted_color,
-                        permissions: permissions
+                        color: muted_color
                     }
+                })
+                message.guild.channels.cache.each(channel => {
+                    channel.updateOverwrite(muteRole,permissions)
+                    console.log(channel.parent)
+                    if(channel.parent.name.toLowerCase() == modCategoryChannelName)
+                    channel.updateOverwrite(muteRole,{'VIEW_CHANNEL' : false})
                 })
             }
             catch (e) {
