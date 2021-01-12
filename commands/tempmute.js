@@ -64,7 +64,7 @@ module.exports = {
         )
         //#endregion
         
-        let reason 
+        let reason = ' '
         for(let i = 2; i < args.length; i++) {
             reason += args[i] + ' '
         }
