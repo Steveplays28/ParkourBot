@@ -4,6 +4,7 @@ const { prefix, bot_color, err_color, mute, mod_category_channel_name: modCatego
     mute_role_name = mute.mute_role_name,
     muted_color = mute.muted_color,
     required_permission = mute.required_permission,
+    permissions_bool = mute.permissions_bool,
     permissions = mute.permissions,
     Discord = require("discord.js")
 
@@ -43,13 +44,14 @@ module.exports = {
                 muteRole = await message.guild.roles.create({
                     data: {
                         name: mute_role_name,
-                        color: muted_color
+                        color: muted_color,
+                        permissions: permissions
                     }
                 })
                 message.guild.channels.cache.each(channel => {
-                    channel.updateOverwrite(muteRole,permissions)
+                    channel.updateOverwrite(muteRole,permissions_bool)
                     console.log(channel.parent)
-                    if(channel.parent.name.toLowerCase() == modCategoryChannelName)
+                    // if(channel.parent.name.toLowerCase() == modCategoryChannelName)
                     channel.updateOverwrite(muteRole,{'VIEW_CHANNEL' : false})
                 })
             }

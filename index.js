@@ -2,7 +2,7 @@ const Discord = require('discord.js'), fs = require('fs'), settings = require('.
 const { prefix } = require('./config'), env = require('dotenv').config()
 const client = new Discord.Client()
 
-const token = env.parsed.TOKEN
+const token = process.env.TOKEN
 
 client.login(token)
 
