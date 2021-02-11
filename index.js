@@ -13,7 +13,7 @@ fs.readdirSync('./commands').forEach(x => this.commands.push(require('./commands
 
 client.on('ready', async () => {
     console.log(`${client.user.username}`)
-        client.user.setActivity(`${prefix}help | develpoed by M1x3l for Steveplays`, {type:'LISTENING'})
+        client.user.setActivity(`${prefix}help | developed by M1x3l and Steveplays :D`, {type:'LISTENING'})
 })
 
 
