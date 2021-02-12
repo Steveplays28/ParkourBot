@@ -10,5 +10,6 @@ module.exports = {
         mute_role_name: "Stalker",
         muted_color: "#D61D00",
         mod_category_channel_name: 'mod channels'
-    }
+    },
+    message_deletiong_timeout: 4000
 }
