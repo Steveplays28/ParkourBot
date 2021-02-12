@@ -6,11 +6,11 @@ module.exports = {
         message.delete()
         message.channel.send(new Discord.MessageEmbed()
             .setColor(bot_color)
-            .addField('Read the Rules', `Please read ${message.guild.rulesChannel ? `<#${message.guild.rulesChannel.id}>` : 'this server\'s rules'}`, false)
+            .addField('Read the rules', `Please read ${message.guild.rulesChannel ? `<#${message.guild.rulesChannel.id}>` : 'this server\'s rules'}`, false)
         )
     },
     name:   "rules",
-    alias:  [""],
+    alias:  ["rule"],
     desc:   "Reminds the User, to look at the rules",
     usage:  `\`\`${prefix}rules\`\``
 }
