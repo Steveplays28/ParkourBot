@@ -1,5 +1,5 @@
 const { group } = require("console")
-const { prefix, managing_color } = require("../config"),
+const { prefix } = require("../config"),
     Discord = require("discord.js")
 
 module.exports = {

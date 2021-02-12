@@ -6,16 +6,13 @@ const token = process.env.TOKEN
 
 client.login(token)
 
-
 this.commands = [];
 fs.readdirSync('./commands').forEach(x => this.commands.push(require('./commands/' + x)))
-
 
 client.on('ready', async () => {
     console.log(`${client.user.username}`)
         client.user.setActivity(`${prefix}help | developed by M1x3l and Steveplays :D`, {type:'LISTENING'})
 })
-
 
 client.on('message', (message) => {
     if(message.author == client.user)

@@ -16,7 +16,6 @@ module.exports = {
         var embed = new Discord.MessageEmbed()
             .setColor(bot_color)
             .setTitle("Help")
-
         
         cmds.forEach(cmd => {
                 if(cmd.name){
@@ -33,8 +32,6 @@ module.exports = {
                 )}
         })
         message.channel.send(embed)
-
-
 
     },
     name:   "Help",
