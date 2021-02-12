@@ -15,5 +15,5 @@ module.exports = {
     name:   "Kick",
     alias:  ["kickmember"],
     desc:   "Kicks the mentioned user.",
-    usage:  `\`\`${prefix}kick [@user] [reason]\`\``
+    usage:  `\`\`${prefix}kick {@user} (reason)\`\``
 }

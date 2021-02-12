@@ -3,6 +3,7 @@ var cmds = []
 require("fs").readdirSync(path.join(__dirname, ".")).forEach(file => {
     cmds.push(require(path.join(__dirname, ".", file)))
   })
+cmds.push(this)
 /*
 const add = require("./add")
 const advanced = require("./advanced")
@@ -13,9 +14,15 @@ const multiply = require("./multiply")
 module.exports = {
     run: async(message, args, client) => {
             
+
         var embed = new Discord.MessageEmbed()
             .setColor(bot_color)
             .setTitle("Help")
+            .addField(
+                'How to read this',
+                `\`{data}\` → important
+                \`(data)\` → optional`
+            )
         
         cmds.forEach(cmd => {
                 if(cmd.name){

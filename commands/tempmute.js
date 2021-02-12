@@ -1,10 +1,6 @@
 const ms = require("ms")
 
 const { prefix, bot_color, err_color, mute, mod_category_channel_name: modCategoryChannelName, logging_channel} = require("../config"), 
-    mute_role_name = mute.mute_role_name,
-    muted_color = mute.muted_color,
-    required_permission = mute.required_permission,
-    permissions = mute.permissions,
     Discord = require("discord.js")
 
 let err_embed = new Discord.MessageEmbed()
@@ -22,18 +18,23 @@ module.exports = {
 
         //Person to be kicked has required permissions -> return error
         //#region check permissions of "To be muted"
-        // if(toMute.hasPermission(required_permission)) 
+        // if(toMute.hasPermission(mute.required_permission)) 
         // return message.channel.send(
-        //     err_embed.addField('Can\'t be muted',`Couldn't mute User with Permission: ${required_permission}`,false)
+        //     err_embed.addField('Can\'t be muted',`Couldn't mute User with Permission: ${mute.required_permission}`,false)
         // ).then(msg => {
         //     msg.delete({timeout: 4000})
         //     message.delete({timeout: 4000})
         // })
         //#endregion
 
-        let muteRole = message.guild.roles.cache.find(role => role.name == mute_role_name)
+        let muteRole = message.guild.roles.cache.find(role => role.name == mute.mute_role_name)
 
-        const muteTime = args[1] * 1000
+        let muteTime = args[1]
+        if(!muteTime.match(/\d+[a-zA-Z]*/)) {
+            muteTime = args[1].match(/\d+/)[0] + 's'
+        }
+        isNaN(ms(muteTime)) ? muteTime = mute.mute_default_timeout : {}
+        const muteTimeMS = ms(muteTime)
         //
         if(!muteTime)
         return message.channel.send(
@@ -46,12 +47,12 @@ module.exports = {
         await (toMute.roles.add(muteRole))
 
         const embed = new Discord.MessageEmbed()
-            .setColor(muted_color)
+            .setColor(mute.muted_color)
             .setTitle(`${toMute.user.tag} has been muted`)
-            .addField(`Duration: ${ms(muteTime)}
+            .addField(`Duration: ${ms(muteTimeMS, {long : true})}
                 Reason: ${reason}
                 `.replace(/    /g,''),
-                ''
+                '؜'
             )
             .setFooter(message.member.guild.name, message.member.guild.iconURL())
             .setTimestamp(Date.now())
@@ -66,5 +67,5 @@ module.exports = {
     name:   "tempmute",
     alias:  ["mute"],
     desc:   "Mutes a user for a certain amount of time.",
-    usage:  `\`\`${prefix}tempmute [@User] [time] [reason]\`\``
+    usage:  `\`\`${prefix}tempmute {@User} {time} (reason)\`\``
 }
