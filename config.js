@@ -20,8 +20,5 @@ module.exports = {
         muted_color:                "#D61D00",
         mod_category_channel_name:  'mod channels'
     },
-<<<<<<< Updated upstream
-=======
     message_deletiong_timeout:      4000
->>>>>>> Stashed changes
 }
