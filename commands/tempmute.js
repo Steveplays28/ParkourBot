@@ -1,11 +1,15 @@
 const ms = require("ms")
 
-const { prefix, bot_color, err_color, mute, mod_category_channel_name: modCategoryChannelName} = require("../config"), 
+const { prefix, bot_color, err_color, mute, mod_category_channel_name: modCategoryChannelName, logging_channel} = require("../config"), 
     mute_role_name = mute.mute_role_name,
     muted_color = mute.muted_color,
     required_permission = mute.required_permission,
     permissions = mute.permissions,
     Discord = require("discord.js")
+
+let err_embed = new Discord.MessageEmbed()
+    .setTitle('Error')
+    .setColor(err_color)
 
 module.exports = {
     run: async(message, args, client) => {
@@ -35,26 +39,25 @@ module.exports = {
         return message.channel.send(
             err_embed.addField(`No time specified`,`Couldn't find time`,false)
         )
+        args.shift()
+        args.shift()
+        let reason = args.join(' ')
         
-        let reason = ' '
-        for(let i = 2; i < args.length; i++) {
-            reason += args[i] + ' '
-        }
         await (toMute.roles.add(muteRole))
 
-        message.channel.send(
-            new Discord.MessageEmbed()
+        const embed = new Discord.MessageEmbed()
             .setColor(muted_color)
-            .setTitle(`${toMute} has been muted`)
-            .addField(
-                `Duration: ${ms(muteTime)}
+            .setTitle(`${toMute.user.tag} has been muted`)
+            .addField(`Duration: ${ms(muteTime)}
                 Reason: ${reason}
                 `.replace(/    /g,''),
-                false
+                ''
             )
             .setFooter(message.member.guild.name, message.member.guild.iconURL())
             .setTimestamp(Date.now())
-        )
+
+        message.channel.send(embed)
+        message.guild.channels.cache.find(channel => channel.name.toLowerCase() == logging_channel || channel.name.toLowerCase() == logging_channel.replace(/ /g,'-')).send(embed)
 
         setTimeout(function () {
             toMute.roles.remove(muteRole)

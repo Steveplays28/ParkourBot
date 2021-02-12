@@ -26,7 +26,12 @@ client.on('message', (message) => {
     
     const c = this.commands.find(com => com.name.toLowerCase() == command.toLowerCase() || com.alias.includes(command.toLowerCase()))
 
-    if(message.member.hasPermission(permissions[c.name.toLowerCase()])) {
+    if(!message.member.hasPermission(permissions[c.name.toLowerCase()], {
+        options: {
+            checkAdmin: true,
+            checkOwner: true
+        }
+    })) {
         return message.channel.send(
             new Discord.MessageEmbed()
                 .setTitle('Insufficient Permissions')

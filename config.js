@@ -18,7 +18,7 @@ module.exports = {
         required_permission:        "MANAGE_MESSAGES",
         mute_role_name:             "Stalker",
         muted_color:                "#D61D00",
-        mod_category_channel_name:  'mod channels'
     },
+    logging_channel:                'mod log',
     message_deletiong_timeout:      4000
 }
