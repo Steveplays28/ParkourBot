@@ -1,6 +1,6 @@
 const ms = require("ms")
 
-const { prefix, bot_color, err_color, mute, mod_category_channel_name: modCategoryChannelName, message_deletiong_timeout: timout} = require("../config"), 
+const { prefix, bot_color, err_color, mute, mod_category_channel_name: modCategoryChannelName, message_deletiong_timeout: timeout} = require("../config"), 
     mute_role_name = mute.mute_role_name,
     muted_color = mute.muted_color,
     required_permission = mute.required_permission,
