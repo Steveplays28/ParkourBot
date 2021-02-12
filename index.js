@@ -1,5 +1,5 @@
 const Discord = require('discord.js'), fs = require('fs'), settings = require('./config');
-const { prefix } = require('./config'), env = require('dotenv').config()
+const { prefix, permissions, err_color } = require('./config'), env = require('dotenv').config()
 const client = new Discord.Client()
 
 const token = process.env.TOKEN
@@ -25,6 +25,15 @@ client.on('message', (message) => {
     const command = message.content.split(' ')[0].replace(settings.prefix, '').toLowerCase()
     
     const c = this.commands.find(com => com.name.toLowerCase() == command.toLowerCase() || com.alias.includes(command.toLowerCase()))
+
+    if(message.member.hasPermission(permissions[c.name.toLowerCase()])) {
+        return message.channel.send(
+            new Discord.MessageEmbed()
+                .setTitle('Insufficient Permissions')
+                .setColor(err_color)
+                .setDescription(`You do not have the permission \`${permissions[c.name.toLowerCase()]}\`, which is needed to execute this command.`)
+        )
+    }
 
     if(c)
         c.run(message, args, client).catch(err=> {
