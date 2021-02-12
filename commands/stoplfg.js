@@ -1,5 +1,5 @@
 const { group } = require("console")
-const { prefix, managing_color } = require("../config"),
+const { prefix, managing_color, message_deletiong_timeout: timeout } = require("../config"),
     Discord = require("discord.js")
 
 module.exports = {
@@ -7,7 +7,7 @@ module.exports = {
         const LFGRole = message.guild.roles.cache.find(role => role.name == "LFG")
         message.member.roles.remove(LFGRole)
         message.delete()
-        message.channel.send("You have stopped looking for a group.")
+        message.channel.send("You have stopped looking for a group.").then((message) => message.delete({timeout : timeout}))
     },
     name: "StopLookingForGroup",
     alias: ["stoplfg"],

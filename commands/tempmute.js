@@ -1,6 +1,6 @@
 const ms = require("ms")
 
-const { prefix, bot_color, err_color, mute, mod_category_channel_name: modCategoryChannelName} = require("../config"), 
+const { prefix, bot_color, err_color, mute, mod_category_channel_name: modCategoryChannelName, message_deletiong_timeout: timout} = require("../config"), 
     mute_role_name = mute.mute_role_name,
     muted_color = mute.muted_color,
     required_permission = mute.required_permission,
@@ -29,8 +29,8 @@ module.exports = {
         // return message.channel.send(
         //     err_embed.addField('Can\'t be muted',`Couldn't mute User with Permission: ${required_permission}`,false)
         // ).then(msg => {
-        //     msg.delete({timeout: 4000})
-        //     message.delete({timeout: 4000})
+        //     msg.delete({timeout: timeout})
+        //     message.delete({timeout: timeout})
         // })
         //#endregion
         
@@ -69,8 +69,8 @@ module.exports = {
         return message.channel.send(
             err_embed.addField(`No time specified`,`Couldn't find time`,false)
         ).then(msg => {
-            msg.delete({timeout: 4000})
-            message.delete({timeout: 4000})
+            msg.delete({timeout: timeout})
+            message.delete({timeout: timeout})
         })
         //#endregion
         
@@ -91,8 +91,8 @@ module.exports = {
                 false
                 )
         ).then(msg => {
-            msg.delete({timeout: 4000})
-            message.delete({timeout: 4000})
+            msg.delete({timeout: timeout})
+            message.delete({timeout: timeout})
         })
         setTimeout(function () {
             toMute.roles.remove(muteRole)

@@ -20,5 +20,6 @@ module.exports = {
             'VIEW_CHANNEL'
         ],
         mod_category_channel_name: 'mod channels'
-    }
+    },
+    message_deletiong_timeout: 4000
 }
