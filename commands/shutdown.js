@@ -2,7 +2,7 @@ const { prefix, managing_color, err_color } = require("../config"),
     Discord = require("discord.js")
 
 module.exports = {
-    run: async (message, args, client) => {        
+    run: async (message, args, client) => {
         var embed = new Discord.MessageEmbed()
             .setColor(managing_color)
             .setFooter(message.member.guild.name, message.member.guild.iconURL())
