@@ -1,10 +1,12 @@
+const ms = require('ms')
 const Discord = require('discord.js'), fs = require('fs'), settings = require('./config');
-const { prefix, permissions, err_color } = require('./config'), env = require('dotenv').config()
+const { prefix, permissions, err_color, startup_logging_channel } = require('./config'), env = require('dotenv').config()
 const client = new Discord.Client()
 
 const token = process.env.TOKEN
 
 client.login(token)
+const date = Date.now()
 
 this.commands = [];
 fs.readdirSync('./commands').forEach(x => this.commands.push(require('./commands/' + x)))
@@ -12,6 +14,18 @@ fs.readdirSync('./commands').forEach(x => this.commands.push(require('./commands
 client.on('ready', async () => {
     console.log(`${client.user.username}`)
         client.user.setActivity(`${prefix}help | developed by M1x3l and Steveplays :D`, {type:'LISTENING'})
+
+    client.guilds.cache.each(guild => {
+        try {
+            guild.channels.cache.find(channel => channel.name.toLowerCase() == startup_logging_channel || channel.name.toLowerCase() == startup_logging_channel.replace(/ /g,'-')).send(new Discord.MessageEmbed()
+                .setTitle(`${client.user.username} is online now`)
+                .setDescription(`Time from startup to sending of this message: \`${ms(Date.now() - date, { long: true})}\``)
+            )
+        } catch (err) {
+            console.log(`No startup logging channel found on "${guild.name}"`)
+        }
+    })
+    
 })
 
 client.on('message', (message) => {

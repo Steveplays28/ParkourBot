@@ -7,6 +7,8 @@ module.exports = {
         "shutdown"      : "MANAGE_SERVER",
         "none-command"  : "SEND_MESSAGES",
         "help"          : "SEND_MESSAGES",
+        "inject"        : "MANAGE_SERVER",
+        "kick"          : "KICK_MEMBERS",
         "lfg"           : "SEND_MESSAGES",
         "pins"          : "SEND_MESSAGES",
         "rules"         : "SEND_MESSAGES",
@@ -21,5 +23,7 @@ module.exports = {
         mute_default_timeout:       "60s"
     },
     logging_channel:                'mod log',
-    message_deletion_timeout:      4000
+    message_deletion_timeout:       4000,
+    startup_logging_channel:        'bot log',
+    message_deletiong_timeout:      4000
 }
