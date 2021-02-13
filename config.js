@@ -4,22 +4,22 @@ module.exports = {
     err_color:      "#EE1111",
     prefix:         "?",
     permissions: {
-        "help"          : "SEND_MESSAGES",
-        "kick"          : "KICK_MEMBERS",
-        "lfg"           : "SEND_MESSAGES",
+        "shutdown"      : "MANAGE_SERVER",
         "none-command"  : "SEND_MESSAGES",
+        "help"          : "SEND_MESSAGES",
+        "lfg"           : "SEND_MESSAGES",
         "pins"          : "SEND_MESSAGES",
         "rules"         : "SEND_MESSAGES",
-        "shutdown"      : "MANAGE_SERVER",
         "stoplfg"       : "SEND_MESSAGES",
-        "tempmute"      : "MANAGE_MESSAGES"
+        "tempmute"      : "MANAGE_MESSAGES",
+        "kick"          : "KICK_MEMBERS",
+        "ban"           : "BAN_MEMBERS"
     },
     mute: {
-        required_permission:        "MANAGE_MESSAGES",
         mute_role_name:             "Stalker",
         muted_color:                "#D61D00",
         mute_default_timeout:       "60s"
     },
     logging_channel:                'mod log',
-    message_deletiong_timeout:      4000
+    message_deletion_timeout:      4000
 }
