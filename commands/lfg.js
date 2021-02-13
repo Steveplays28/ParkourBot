@@ -1,8 +1,19 @@
 const { prefix, managing_color } = require("../config"),
     Discord = require("discord.js")
+const Mongoose = require('mongoose')
+
 
 module.exports = {
     run: async (message, args, client) => {
+        await Mongoose.connect(process.env.MONGOPASS, {
+            useNewUrlParser: true,
+            useUnifiedTopology: true,
+            useFindAndModify: false,
+            useCreateIndex: true
+        }).catch(err => console.log(err))
+        const Data = require('../models/data')
+
+        
         var embed = new Discord.MessageEmbed()
             .setColor(managing_color)
             .setAuthor(message.author.tag, message.author.avatarURL())
@@ -19,7 +30,15 @@ module.exports = {
         const LFGRole = message.guild.roles.cache.find(role => role.name == "LFG")
         message.member.roles.add(LFGRole)
         message.delete()
-        message.channel.send(LFGRole, embed)
+        message.channel.send(LFGRole, embed).then(msg => {
+            const instance = new Data({
+                userID: msg.author.id,
+                guildID: msg.guild.id,
+                channelID: msg.channel.id,
+                messageID: msg.id,
+              })
+            instance.save((err) => { if(err) return console.log(err)})          
+        })
     },
     name: "LookingForGroup",
     alias: ["lfg"],

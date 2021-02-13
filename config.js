@@ -5,6 +5,7 @@ module.exports = {
     prefix:         "?",
     permissions: {
         "help"          : "SEND_MESSAGES",
+        "inject"        : "MANAGE_SERVER",
         "kick"          : "KICK_MEMBERS",
         "lfg"           : "SEND_MESSAGES",
         "none-command"  : "SEND_MESSAGES",
@@ -21,5 +22,6 @@ module.exports = {
         mute_default_timeout:       "60s"
     },
     logging_channel:                'mod log',
+    startup_logging_channel:        'bot log',
     message_deletiong_timeout:      4000
 }
