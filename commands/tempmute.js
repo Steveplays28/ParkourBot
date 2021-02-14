@@ -9,11 +9,15 @@ let err_embed = new Discord.MessageEmbed()
 
 module.exports = {
     run: async(message, args, client) => {
+        /**
+         * `GuildMember` that should be muted
+         * @type Discord.GuildMember
+         */
         const toMute = message.guild.member(message.mentions.users.first())
         
         if(!toMute)
         return message.channel.send(
-            err_embed.addField('User not found',`Couldn't find user (${args[0]})`,false)
+            err_embed.addField('User not found',`Couldn't find user (${args[0] ? args[0] : 'No user specified'})`,false)
         )
 
         //Person to be kicked has required permissions -> return error

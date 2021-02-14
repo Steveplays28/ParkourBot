@@ -1,17 +1,37 @@
-const { group } = require("console")
-const { prefix, message_deletiong_timeout: timeout } = require("../config"),
-    Discord = require("discord.js")
+const { prefix, message_deletiong_timeout: timeout, lfg_role_name } = require("../config")
+/**
+ * `Discord.js` package
+ */
+const Discord = require("discord.js")
+/**
+ * `Mongoose` package
+ */
 const Mongoose = require('mongoose')
 
 module.exports = {
     run: async (message, args, client) => {
+        /**
+         * Connect to the database
+         */
         await Mongoose.connect(process.env.MONGOPASS, {
             useNewUrlParser: true,
             useUnifiedTopology: true,
             useFindAndModify: false,
             useCreateIndex: true
         })
+
+        /**
+         * `Data` Model 
+         */
         const Data = require('../models/data')
+
+        /**
+         * Find messages by the specified userID
+         * If there are any, log the errors
+         * Find the message on discord and delete it
+         * If there are any, log the errors
+         * Delete the document from the database
+         */
         await Data.find({ userID: client.user.id }, (err, docs) => { 
             if(err) console.log(err)
             docs.forEach(doc => {
@@ -26,10 +46,21 @@ module.exports = {
             })
         }).catch(err => console.log(err))
       
-
-        const LFGRole = message.guild.roles.cache.find(role => role.name == "LFG")
+        /**
+         * Role, specified by the `lfg_role_name` in `config.js`
+         */
+        const LFGRole = message.guild.roles.cache.find(role => role.name == lfg_role_name)
+        /**
+         * Romove the `LFGRole` from the user
+         */
         message.member.roles.remove(LFGRole)
+        /**
+         * Delete the message, that was sent by the user
+         */
         message.delete()
+        /**
+         * Send a message to tell the user he stoped looking for a group and delete it afterwards
+         */
         message.channel.send("You have stopped looking for a group.")
             .then(msg => msg.delete({timeout: timeout}))
             .catch(err => console.log(err))

@@ -25,5 +25,6 @@ module.exports = {
     logging_channel:                'mod log',
     message_deletion_timeout:       4000,
     startup_logging_channel:        'bot log',
-    message_deletiong_timeout:      4000
+    message_deletiong_timeout:      4000,
+    lfg_role_name:                  'LFG'
 }
