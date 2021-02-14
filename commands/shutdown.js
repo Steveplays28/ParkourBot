@@ -15,6 +15,18 @@ module.exports = {
                 inline: false
             }
         )
+
+        client.guilds.cache.each(guild => {
+            try {
+                guild.channels.cache.find(channel => channel.name.toLowerCase() == startup_logging_channel || channel.name.toLowerCase() == startup_logging_channel.replace(/ /g,'-')).send(new Discord.MessageEmbed()
+                    .setTitle(`${client.user.username} is offline now`)
+                    .setDescription(`The bot has been shut down`)
+                )
+            } catch (err) {
+                console.log(`No startup logging channel found on "${guild.name}"`)
+            }
+        })
+
         message.channel.send(embed)
         setTimeout(function () {
             process.exit()
