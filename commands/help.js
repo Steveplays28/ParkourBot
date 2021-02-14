@@ -13,8 +13,6 @@ const multiply = require("./multiply")
 */
 module.exports = {
     run: async(message, args, client) => {
-            
-
         var embed = new Discord.MessageEmbed()
             .setColor(bot_color)
             .setTitle("Help")
