@@ -13,6 +13,20 @@ module.exports = {
             .setColor(err_color) 
 
         /**
+         * `GuildMember` that should be kicked
+         * @type Discord.GuildMember
+         */
+        const toKick = message.mentions.users.first()
+
+        /**
+         * If the user couln't be found, return error 
+         */
+        if(!toKick)
+        return message.channel.send(
+            err_embed.addField('User not found',`Couldn't find user (${args[0] ? args[0] : 'No user specified'})`,false)
+        )
+
+        /**
          * The `reason` for the kick
          */
         args.shift()
@@ -26,7 +40,7 @@ module.exports = {
          */
         const embed = new Discord.MessageEmbed()
             .setColor(managing_color)
-            .setAuthor(message.mentions.users.first().tag + " has been kicked!", message.mentions.users.first().avatarURL())
+            .setAuthor(toKick.tag + " has been kicked!", toKick.avatarURL())
             .setFooter(message.member.guild.name, message.member.guild.iconURL())
             .setTimestamp(Date.now())
             .addField(
@@ -34,12 +48,6 @@ module.exports = {
                 `\u200b`,
                 false
             )
-
-        /**
-         * `GuildMember` that should be kicked
-         * @type Discord.GuildMember
-         */
-        const toKick = message.mentions.users.first()
 
         /**
          * If there's no user found, return an error
