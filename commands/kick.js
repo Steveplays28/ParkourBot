@@ -13,10 +13,13 @@ module.exports = {
             .setColor(err_color) 
 
         /**
-         * The reason for the kick
+         * The `reason` for the kick
          */
         args.shift()
-        const reason = args.join(' ')
+        let reason = args.join(' ')
+
+        if(!reason)
+        reason = `undefined`
 
         /**
          * The `MessageEmbed` that is send to the channel the kick was executed in
@@ -26,15 +29,11 @@ module.exports = {
             .setAuthor(message.mentions.users.first().tag + " has been kicked!", message.mentions.users.first().avatarURL())
             .setFooter(message.member.guild.name, message.member.guild.iconURL())
             .setTimestamp(Date.now())
-        
-        if(reason)
-        embed.addField(
-            `Reason: ${reason}`,
-            `\u200b`,
-            false
-        )
-        else
-        embed.setDescription(`\u200b`)
+            .addField(
+                `Reason: ${reason}`,
+                `\u200b`,
+                false
+            )
 
         /**
          * `GuildMember` that should be kicked
