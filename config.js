@@ -4,6 +4,7 @@ module.exports = {
     err_color:      "#EE1111",
     prefix:         "?",
     permissions: {
+        "default"       : "MANAGE_SERVER",
         "shutdown"      : "MANAGE_SERVER",
         "none-command"  : "SEND_MESSAGES",
         "help"          : "SEND_MESSAGES",
@@ -12,6 +13,7 @@ module.exports = {
         "lfg"           : "SEND_MESSAGES",
         "pins"          : "SEND_MESSAGES",
         "rules"         : "SEND_MESSAGES",
+        "shutdown"      : "MANAGE_SERVER",
         "stoplfg"       : "SEND_MESSAGES",
         "tempmute"      : "MANAGE_MESSAGES",
         "kick"          : "KICK_MEMBERS",

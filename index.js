@@ -6,14 +6,20 @@ const client = new Discord.Client()
 const token = process.env.TOKEN
 
 client.login(token)
+.catch(err => console.log(err))
+
 const date = Date.now()
 
-this.commands = [];
-fs.readdirSync('./commands').forEach(x => this.commands.push(require('./commands/' + x)))
+let commands = []
+fs.readdirSync('./commands').forEach(file => {
+    commands.push(`require('./commands/${file}')`)
+})
 
-client.on('ready', async () => {
-    console.log(`${client.user.username}`)
-        client.user.setActivity(`${prefix}help | developed by M1x3l and Steveplays :D`, {type:'LISTENING'})
+
+client.on('ready', () => {
+    console.log(`\x1b[35m${client.user.username}\x1b[0m`)
+    client.user.setPresence(`${prefix}help | developed by M1x3l and Steveplays :D`, {type:'LISTENING'})
+    .catch(err => console.log(err ))
 
     client.guilds.cache.each(guild => {
         try {
@@ -22,25 +28,37 @@ client.on('ready', async () => {
                 .setDescription(`Time from startup to sending of this message: \`${ms(Date.now() - date, { long: true})}\``)
             )
         } catch (err) {
-            console.log(`No startup logging channel found on "${guild.name}"`)
+            console.log(`\x1b[33mNo startup logging channel found on \x1b[34m${guild.name}\x1b[0m`)
         }
     })
     
 })
 
 client.on('message', (message) => {
-    if(message.author == client.user)
-    return
-    if(!message.content.startsWith(settings.prefix))
+    if(
+        (message.author == client.user) ||
+        !(message.content.startsWith(prefix)) ||
+        !(message.guild)
+    )
     return
     
     var args = message.content.split(' ')
     args.shift()
-    const command = message.content.split(' ')[0].replace(settings.prefix, '').toLowerCase()
-    
-    const c = this.commands.find(com => com.name.toLowerCase() == command.toLowerCase() || com.alias.includes(command.toLowerCase()))
+    const command = message.content.split(' ')[0].replace(prefix, '').toLowerCase()
+    if(!command) 
+    return
 
-    if(!message.member.hasPermission(permissions[c.name.toLowerCase()], {
+    let c = eval(commands.find(com => eval(com).name.toLowerCase() == command || eval(com).alias.includes(command)))
+    if(!c){
+        return message.channel.send(new Discord.MessageEmbed()
+            .setTitle(`Invalid command`)
+            .setDescription(`Command \`${command}\` was not found`)
+        )
+    }
+
+
+    cName = c.name
+    if(!message.member.hasPermission(permissions[cName ? cName.toLowerCase : 'default'], {
         options: {
             checkAdmin: true,
             checkOwner: true
@@ -51,11 +69,11 @@ client.on('message', (message) => {
                 .setTitle('Insufficient Permissions')
                 .setColor(err_color)
                 .setDescription(`You do not have the permission \`${permissions[c.name.toLowerCase()]}\`, which is needed to execute this command.`)
-        )
+        ).catch(err => console.log(err))
     }
 
     if(c)
-        c.run(message, args, client).catch(err=> {
+        c.run(message, args, client).catch(err => {
             console.log(err)
             message.channel.send(new Discord.MessageEmbed()
                 .setColor("RED")

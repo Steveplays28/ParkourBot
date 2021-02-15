@@ -1,5 +1,3 @@
-//@ts-check
-
 const ms = require("ms")
 
 const { prefix, bot_color, err_color, mute, logging_channel} = require("../config"), 
