@@ -1,4 +1,4 @@
-const { prefix, managing_color, err_color } = require("../config"),
+const { prefix, managing_color, err_color, startup_logging_channel } = require("../config"),
     Discord = require("discord.js")
 
 module.exports = {

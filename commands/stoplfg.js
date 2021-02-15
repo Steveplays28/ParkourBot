@@ -39,8 +39,9 @@ module.exports = {
                     client.guilds.cache.find(guild => guild.id == doc.guildID).channels.cache.find(channel => channel.id == doc.channelID && channel.type == 'text').messages.cache.find(message => message.id == doc.messageID).delete() 
                 }
                 catch(err) {
+                    if(!err.stack.includes('Cannot read property \'delete\' of undefined'))
                     console.log(err)
-                    console.log('The message that was looked for may not be cached anyomre')
+                    console.log('\x1b[33mThe message that was looked for may not be cached anyomre\x1b[0m')
                 }
                 Data.findByIdAndDelete(doc._id, (err) => {if(err) console.log(err)})
             })
