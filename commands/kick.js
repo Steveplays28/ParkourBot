@@ -1,4 +1,4 @@
-const { prefix, managing_color, err_color } = require("../config"), 
+const { prefix, managing_color, err_color, logging_channel } = require("../config"), 
     Discord = require("discord.js")
 
 /**
@@ -10,8 +10,14 @@ module.exports = {
     run: async(message, args, client) => {
         let err_embed = new Discord.MessageEmbed()
             .setTitle('Error')
-            .setColor(err_color)
-        
+            .setColor(err_color) 
+
+        /**
+         * The reason for the kick
+         */
+        args.shift()
+        const reason = args.join(' ')
+
         /**
          * The `MessageEmbed` that is send to the channel the kick was executed in
          */
@@ -20,16 +26,22 @@ module.exports = {
             .setAuthor(message.mentions.users.first().tag + " has been kicked!", message.mentions.users.first().avatarURL())
             .setFooter(message.member.guild.name, message.member.guild.iconURL())
             .setTimestamp(Date.now())
-            .addField(
-                `*${message.mentions.users.first().tag} (${message.mentions.members.first().nickname})* has been kicked.`,
-                `\u200b`,
-                false
-            )
+        
+        if(reason)
+        embed.addField(
+            `Reason: ${reason}`,
+            `\u200b`,
+            false
+        )
+        else
+        embed.setDescription(`\u200b`)
+
         /**
          * `GuildMember` that should be kicked
          * @type Discord.GuildMember
          */
         const toKick = message.mentions.users.first()
+
         /**
          * If there's no user found, return an error
          */
@@ -37,14 +49,17 @@ module.exports = {
         return message.channel.send(
             err_embed.addField('User not found',`Couldn't find user (${args[0] ? args[0] : 'No user specified'})`,false)
         )
+
         /**
          * Actually kick the person
          */
         // toKick.kick()
+
         /**
          * Send an embed, to tell, that the user has been kicked succesfully
          */
         message.channel.send(embed)
+
         /**
          * Send an embed to the `loggging_channel` defined in `config.js`, to tell, that the user has been kicked succesfully
          */
