@@ -1,17 +1,17 @@
-const { prefix, managing_color } = require("../config"), 
+const { prefix, managing_color, err_color } = require("../config"), 
     Discord = require("discord.js")
 
 /**
  * `MessageEmbed` that is used, when an error is returned to the channel
  */
-let err_embed = new Discord.MessageEmbed()
-    .setTitle('Error')
-    .setColor(err_color)
-    
+
 
 module.exports = {
     run: async(message, args, client) => {
-
+        let err_embed = new Discord.MessageEmbed()
+            .setTitle('Error')
+            .setColor(err_color)
+        
         /**
          * The `MessageEmbed` that is send to the channel the kick was executed in
          */

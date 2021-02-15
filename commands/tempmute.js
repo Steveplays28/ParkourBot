@@ -5,12 +5,12 @@ const ms = require("ms")
 const { prefix, bot_color, err_color, mute, logging_channel} = require("../config"), 
     Discord = require("discord.js")
 
-let err_embed = new Discord.MessageEmbed()
-    .setTitle('Error')
-    .setColor(err_color)
-
+    
 module.exports = {
-    run: async(message, args, client) => {
+        run: async(message, args, client) => {
+        let err_embed = new Discord.MessageEmbed()
+            .setTitle('Error')
+            .setColor(err_color)
         /**
          * `GuildMember` that should be muted
          * @type Discord.GuildMember
@@ -88,9 +88,10 @@ module.exports = {
             .setColor(mute.muted_color)
             .setTitle(`${toMute.user.tag} has been muted`)
             .addField(`Duration: ${ms(muteTimeMS, {long : true})}
-                Reason: ${reason}
+                ${reason ? 'Reason: ' : ''}${reason}
                 `.replace(/    /g,''),
-                '؜'
+                '\u200B',
+                false
             )
             .setFooter(message.member.guild.name, message.member.guild.iconURL())
             .setTimestamp(Date.now())
