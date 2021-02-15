@@ -3,7 +3,13 @@ const { prefix, bot_color } = require("../config"),
 
 module.exports = {
     run: async(message, args, Client) => {
+        /**
+         * Delete the message
+         */
         message.delete()
+        /**
+         * Sends a message to the channel, telling to read the channel's pins
+         */
         message.channel.send(new Discord.MessageEmbed()
             .setColor(bot_color)
             .addField('Read the Pins', 'Please read this channel\'s pinned messages', false)

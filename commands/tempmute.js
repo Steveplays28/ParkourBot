@@ -1,6 +1,8 @@
+//@ts-check
+
 const ms = require("ms")
 
-const { prefix, bot_color, err_color, mute, mod_category_channel_name: modCategoryChannelName, logging_channel} = require("../config"), 
+const { prefix, bot_color, err_color, mute, logging_channel} = require("../config"), 
     Discord = require("discord.js")
 
 let err_embed = new Discord.MessageEmbed()
@@ -15,6 +17,9 @@ module.exports = {
          */
         const toMute = message.guild.member(message.mentions.users.first())
         
+        /**
+         * If the user couln't be found, return error 
+         */
         if(!toMute)
         return message.channel.send(
             err_embed.addField('User not found',`Couldn't find user (${args[0] ? args[0] : 'No user specified'})`,false)
@@ -31,25 +36,54 @@ module.exports = {
         // })
         //#endregion
 
-        let muteRole = message.guild.roles.cache.find(role => role.name == mute.mute_role_name)
+        /**
+         * `Role` that will be asigned to the member when muted
+         * @type Discord.Role
+         */
+        const muteRole = message.guild.roles.cache.find(role => role.name == mute.mute_role_name)
 
-        let muteTime = args[1]
-        if(!muteTime.match(/\d+[a-zA-Z]*/)) {
-            muteTime = args[1].match(/\d+/)[0] + 's'
+        /**
+         * @type String
+         */
+        const muteTime = args[1]
+        /**
+         * If `muteTime` is not defined, return error
+         */
+        if(!muteTime) {
+            return message.channel.send(
+                err_embed.addField(`No time specified`,`Couldn't find time`,false)
+            )
         }
-        isNaN(ms(muteTime)) ? muteTime = mute.mute_default_timeout : {}
+        /**
+         * If `muteTime` is no valid time, return error
+         */
+        if(isNaN(ms(muteTime))) {
+            return message.channel.send(
+                err_embed.addField(`Invalid time argument`,`Couldn't parse given time (${args[1]}) to milliseconds`,false)
+            )
+        }
+        /**
+         * The `muteTime` in milliseconds
+         * @type Number
+         */
         const muteTimeMS = ms(muteTime)
-        //
-        if(!muteTime)
-        return message.channel.send(
-            err_embed.addField(`No time specified`,`Couldn't find time`,false)
-        )
+        /**
+         * Shift `args` twice, to remove the mention and time arguments
+         */
         args.shift()
         args.shift()
-        let reason = args.join(' ')
-        
+        /**
+         * Joined args from `args[2]` to `args[∞]`
+         * @type String
+         */
+        const reason = args.join(' ')
+        /**
+         * wait until `muteRole` is added to the member
+         */
         await (toMute.roles.add(muteRole))
-
+        /**
+         * `MessageEmbed` that is sent after muting succescully
+         */
         const embed = new Discord.MessageEmbed()
             .setColor(mute.muted_color)
             .setTitle(`${toMute.user.tag} has been muted`)
@@ -61,12 +95,18 @@ module.exports = {
             .setFooter(message.member.guild.name, message.member.guild.iconURL())
             .setTimestamp(Date.now())
 
+        /**
+         * Send the embed to the channel the user was muted in and to the `logging_channel` that is declaed in `config.js`
+         */
         message.channel.send(embed)
         message.guild.channels.cache.find(channel => channel.name.toLowerCase() == logging_channel || channel.name.toLowerCase() == logging_channel.replace(/ /g,'-')).send(embed)
 
+        /**
+         * Set the timeout for the role removal to `muteTimeMS`
+         */
         setTimeout(function () {
             toMute.roles.remove(muteRole)
-        },ms(muteTime))
+        },muteTimeMS)
     },
     name:   "tempmute",
     alias:  ["mute"],
