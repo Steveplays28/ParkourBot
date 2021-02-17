@@ -12,6 +12,20 @@ module.exports = {
      */
     run: async (message, args, client) => {
         /**
+         * If the member is already looking for a group, return message
+         */
+        if(message.member.roles.cache.find(role => role.name == lfg_role_name)) {
+            return message.channel.send( new Discord.MessageEmbed()
+                .setTitle(`Invalid action`)
+                .addField(
+                    `You are already looking for a group`,
+                    `You need to stop looking for a group using \`${prefix}${require('./stoplfg').name}\` to be able to do this`,
+                    false
+                )
+            )
+        }
+
+        /**
          * Connect to the database
          */
         await Mongoose.connect(process.env.MONGOPASS, {
@@ -56,18 +70,18 @@ module.exports = {
          * Send `LFGRole` and `embed` to the channel, the message was sent in
          * Then save the message in the database
          */
-        message.channel.send(LFGRole, embed).then(msg => {
-            const instance = new Data({
-                userID: msg.author.id,
-                guildID: msg.guild.id,
-                channelID: msg.channel.id,
-                messageID: msg.id,
-              })
-            instance.save((err) => { if(err) return console.log(err)})          
+        message.channel.send(LFGRole, embed)
+
+        const instance = new Data({
+            userID: message.author.id,
+            guildID: message.guild.id,
+            channelID: message.channel.id,
+            messageID: message.id,
         })
+        instance.save((err) => { if(err) return console.log(err)})          
     },
-    name: "LookingForGroup",
-    alias: ["lfg"],
+    name: "lfg",
+    alias: ["lookingforgroup"],
     desc: "Marks the author as LFG and notifies the other people that are looking for a group.",
     usage: `\`\`${prefix}lfg [message]\`\``
 }
