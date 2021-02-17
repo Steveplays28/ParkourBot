@@ -10,7 +10,6 @@ let err_embed = new Discord.MessageEmbed()
 
 module.exports = {
     run: async(message, args, client) => {
-
         /**
          * `GuildMember` that should be kicked
          * @type Discord.GuildMember
@@ -51,7 +50,7 @@ module.exports = {
         /**
          * Actually kick the person
          */
-        message.guild.member(toKick).kick(reason)
+        // toKick.kick()
 
         /**
          * Send an embed, to tell, that the user has been kicked succesfully
@@ -63,8 +62,8 @@ module.exports = {
          */
         message.guild.channels.cache.find(channel => channel.name.toLowerCase() == logging_channel || channel.name.toLowerCase() == logging_channel.replace(/ /g,'-')).send(embed)
     },
-    name:   "Kick",
-    alias:  ["kickmember"],
-    desc:   "Kicks the mentioned user.",
-    usage:  `\`\`${prefix}kick {@user} (reason)\`\``
+    name:   "Info",
+    alias:  ["i"],
+    desc:   "Info.",
+    usage:  `\`\`${prefix}info (@user)\`\``
 }

@@ -10,6 +10,7 @@ module.exports = {
         "shutdown"      : "MANAGE_SERVER",
         "none-command"  : "SEND_MESSAGES",
         "help"          : "SEND_MESSAGES",
+        "info"          : "SEND_MESSAGES",
         "inject"        : "MANAGE_SERVER",
         "kick"          : "KICK_MEMBERS",
         "lfg"           : "SEND_MESSAGES",
