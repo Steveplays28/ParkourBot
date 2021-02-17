@@ -11,17 +11,8 @@ const Mongoose = require('mongoose')
 module.exports = {
     run: async (message, args, client) => {
         /**
-         * Connect to the database
-         */
-        await Mongoose.connect(process.env.MONGOPASS, {
-            useNewUrlParser: true,
-            useUnifiedTopology: true,
-            useFindAndModify: false,
-            useCreateIndex: true
-        })
-
-        /**
          * `Data` Model 
+         * @type Mongoose.Model
          */
         const Data = require('../models/data')
 
@@ -32,20 +23,24 @@ module.exports = {
          * If there are any, log the errors
          * Delete the document from the database
          */
-        await Data.find({ userID: client.user.id }, (err, docs) => { 
-            if(err) console.log(err)
-            docs.forEach(doc => {
-                try {
-                    client.guilds.cache.find(guild => guild.id == doc.guildID).channels.cache.find(channel => channel.id == doc.channelID && channel.type == 'text').messages.cache.find(message => message.id == doc.messageID).delete() 
-                }
-                catch(err) {
-                    if(!err.stack.includes('Cannot read property \'delete\' of undefined'))
-                    console.log(err)
-                    console.log('\x1b[33mThe message that was looked for may not be cached anyomre\x1b[0m')
-                }
-                Data.findByIdAndDelete(doc._id, (err) => {if(err) console.log(err)})
-            })
-        }).catch(err => console.log(err))
+        try {
+            await Data.find({ userID: client.user.id }, (err, docs) => { 
+                if(err) console.log(err)
+                docs.forEach(doc => {
+                    try {
+                        client.guilds.cache.find(guild => guild.id == doc.guildID).channels.cache.find(channel => channel.id == doc.channelID && channel.type == 'text').messages.cache.find(message => message.id == doc.messageID).delete() 
+                    }
+                    catch(err) {
+                        if(!err.stack.includes('Cannot read property \'delete\' of undefined'))
+                        console.log(err)
+                        console.log('\x1b[33mThe message that was looked for may not be cached anyomre\x1b[0m')
+                    }
+                    Data.findByIdAndDelete(doc._id, (err) => {if(err) console.log(err)})
+                })
+            }).catch(err => console.log(err))
+        } catch (err) {
+            console.log(err)
+        }
       
         /**
          * Role, specified by the `lfg_role_name` in `config.js`

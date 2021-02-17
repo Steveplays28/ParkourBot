@@ -4,6 +4,12 @@ const Mongoose = require('mongoose')
 
 
 module.exports = {
+    /**
+     * 
+     * @param {Discord.Message} message 
+     * @param {String[]} args 
+     * @param {Discord.Client} client 
+     */
     run: async (message, args, client) => {
         /**
          * Connect to the database

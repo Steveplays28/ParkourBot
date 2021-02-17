@@ -1,3 +1,5 @@
+const Discord = require("discord.js");
+
 module.exports = {
     bot_color:      "#3498DB",
     managing_color: "#0FCFDF",
