@@ -23,7 +23,7 @@ module.exports = {
             )
         
         cmds.forEach(cmd => {
-                if(cmd.name){
+                if(cmd.name) {
                 embed.addFields(
                     {
                         name:   `> ${cmd.name}`,

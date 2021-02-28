@@ -1,7 +1,8 @@
 const ms = require('ms')
 const Discord = require('discord.js'), fs = require('fs'), settings = require('./config');
+const updateMemberCount = require('./updateMemberCount');
 const { prefix, permissions, err_color, startup_logging_channel } = require('./config'), env = require('dotenv').config()
-const client = new Discord.Client()
+const client = new Discord.Client({ ws: { intents: new Discord.Intents(Discord.Intents.ALL)} })
 
 const token = process.env.TOKEN
 
@@ -31,7 +32,7 @@ client.on('ready', () => {
             console.log(`\x1b[33mNo startup logging channel found on \x1b[34m${guild.name}\x1b[0m`)
         }
     })
-    
+    updateMemberCount.run(client)
 })
 
 client.on('message', (message) => {
@@ -80,4 +81,12 @@ client.on('message', (message) => {
                 .setTitle("\:x: Error \:x:")
                 .setDescription(err))
         })
+})
+
+
+client.on('guildMemberAdd', member => {
+    updateMemberCount.run(member.guild)
+})
+client.on('guildMemberRemove', member => {
+    updateMemberCount.run(member.guild)
 })
