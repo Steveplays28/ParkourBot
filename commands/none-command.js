@@ -1,4 +1,4 @@
-const { prefix, bot_color } = require("../config"), Discord = require("discord.js"), path=require("path")
+const { prefix, bot_color, message_deletion_timeout: timeout } = require("../config"), Discord = require("discord.js"), path=require("path")
 
 module.exports = {
     run: async(message, args, client) => {
@@ -17,9 +17,11 @@ module.exports = {
             )
         
         /**
-         * Send the message
+         * Send the message and delete it after timeout
          */
-        message.channel.send(embed)
+        message.channel.send(embed).then(msg => {
+            msg.delete({ timeout: timeout})
+        })
     },
     name:   "None-command",
     alias:  ["none"],

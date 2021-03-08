@@ -7,7 +7,7 @@ module.exports = {
    */
   run: async (guild) => {
     try{
-      guild.channels.cache.find(channel => channel.name.match(/Member Count: ?\d*/)).setName(`Member Count: ${guild.memberCount}`)
+      guild.channels.cache.find(channel => channel.name.match(/Member Count: ?(\d*|undefined)/)).setName(`Member Count: ${guild.memberCount}`)
       .catch(err => {
         console.log(guild.name)
         console.log(err)
