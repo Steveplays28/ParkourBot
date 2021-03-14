@@ -1,20 +1,29 @@
 const ms = require("ms");
-const Discord = require("discord.js"),
-  fs = require("fs"),
-  settings = require("./config");
+const Discord = require("discord.js");
+const Mongoose = require("mongoose");
+const fs = require("fs");
+const settings = require("./config");
 const updateMemberCount = require("./updateMemberCount");
 const {
-    prefix,
-    permissions,
-    err_color,
-    startup_logging_channel,
-  } = require("./config"),
-  env = require("dotenv").config();
+  prefix,
+  permissions,
+  err_color,
+  startup_logging_channel,
+} = require("./config");
+const env = require("dotenv").config();
+
 const client = new Discord.Client({
   ws: { intents: new Discord.Intents(Discord.Intents.ALL) },
 });
 
 const token = process.env.TOKEN;
+
+Mongoose.connect(process.env.MONGOPASS, {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+  useFindAndModify: false,
+  useCreateIndex: true,
+}).catch((err) => console.log(err));
 
 client.login(token).catch((err) => console.log(err));
 
@@ -71,11 +80,13 @@ client
       return;
 
     if (
-      !message.channel.name.includes("bot") &&
-      !message.member.hasPermission("MANAGE_MESSAGES", {
-        checkAdmin: true,
-        checkOwner: true,
-      })
+      !(
+        message.channel.name.includes("bot") &&
+        message.member.hasPermission("MANAGE_MESSAGES", {
+          checkAdmin: true,
+          checkOwner: true,
+        })
+      )
     )
       return;
 
