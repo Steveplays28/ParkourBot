@@ -1,5 +1,5 @@
 const Discord = require("discord.js");
-const { err_color } = require("./config");
+const { err_color } = require("../config");
 
 module.exports = function ErrEmbed(name, value, inline = false) {
   return new Discord.MessageEmbed({

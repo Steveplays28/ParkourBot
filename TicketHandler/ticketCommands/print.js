@@ -1,6 +1,6 @@
 const Discord = require("discord.js");
 const Mongoose = require("mongoose");
-const ErrEmbed = require("../../ErrEmbed");
+const ErrEmbed = require("../../util/ErrEmbed");
 const types = require("../types");
 
 module.exports = {
@@ -11,6 +11,14 @@ module.exports = {
    * @param {Mongoose.Model} Ticket
    */
   run: async (message, args, client, Ticket) => {
+    if (
+      !(
+        message.channel.name.includes("ticket") &&
+        message.channel.name.includes("print")
+      )
+    )
+      return;
+
     if (!args[1] || !types.listTypes.includes(args[1])) {
       return message.channel.send(
         ErrEmbed(

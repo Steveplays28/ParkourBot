@@ -1,10 +1,10 @@
-const Mongoose = require('mongoose')
+const Mongoose = require("mongoose");
 
 const userDataSchema = Mongoose.Schema({
-  userID: Decimal128,
+  userID: String,
   openTickets: Number,
   artXP: Number,
-  votingXP: Number
-})
+  votingXP: Number,
+});
 
-module.exports = Mongoose.model('UserData', userDataSchema)
+module.exports = Mongoose.model("UserData", userDataSchema);

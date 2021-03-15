@@ -1,12 +1,13 @@
-const Mongoose = require('mongoose')
+const Mongoose = require("mongoose");
 
 const ticketSchema = Mongoose.Schema({
   ticketID: String,
-  userID: Number,
+  userID: String,
   type: String,
   content: String,
   link: String,
-  timestamp: Date
-})
+  embedLink: String,
+  timestamp: Date,
+});
 
-module.exports = Mongoose.model('Ticket', ticketSchema)
+module.exports = Mongoose.model("Ticket", ticketSchema);

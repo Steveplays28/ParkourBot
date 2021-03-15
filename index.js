@@ -9,6 +9,7 @@ const {
   permissions,
   err_color,
   startup_logging_channel,
+  message_deletion_timeout: timeout,
 } = require("./config");
 const env = require("dotenv").config();
 
@@ -71,7 +72,15 @@ client
     });
   })
 
-  .on("message", (message) => {
+  .on("message", async (message) => {
+    const channelName = message.channel.name;
+    if (
+      channelName.match(/looking-for-group|lfg/i) &&
+      message.author != client.user
+    ) {
+      message.delete({ timeout });
+    }
+
     if (
       message.author == client.user ||
       !message.content.startsWith(prefix) ||
@@ -81,7 +90,9 @@ client
 
     if (
       !(
-        message.channel.name.includes("bot") &&
+        channelName.includes("bot") ||
+        (channelName.includes("ticket") && channelName.includes("print")) ||
+        channelName.match(/looking-for-group|lfg/i) ||
         message.member.hasPermission("MANAGE_MESSAGES", {
           checkAdmin: true,
           checkOwner: true,

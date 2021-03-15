@@ -1,11 +1,10 @@
-const Mongoose = require('mongoose')
-
+const Mongoose = require("mongoose");
 
 const dataSchema = Mongoose.Schema({
-  userID: Number,
-  guildID: Number,
-  channelID: Number,
-  messageID: Number
-})
+  userID: String,
+  guildID: String,
+  channelID: String,
+  messageID: String,
+});
 
-module.exports = Mongoose.model('Data', dataSchema)
+module.exports = Mongoose.model("Data", dataSchema);
