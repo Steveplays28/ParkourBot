@@ -73,6 +73,8 @@ client
   })
 
   .on("message", async (message) => {
+    if (message.channel.type == "dm") return;
+
     const channelName = message.channel.name;
     if (
       channelName.match(/looking-for-group|lfg/i) &&
