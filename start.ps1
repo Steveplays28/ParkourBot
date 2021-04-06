@@ -1,0 +1,1 @@
+nodemon --trace-warnings index.js
